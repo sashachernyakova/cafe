@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cafe</title>
+
+  <!-- Стили -->
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- SDK для Telegram WebApp (позволяет window.Telegram.WebApp работать всегда) -->
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="app">
+    <div id="content">
+      <!-- Меню с вложенными табами -->
+      <div id="tab-menu" class="tab-content active">
+        <div class="menu-tabs">
+          <button class="menu-tab active" data-menu="food">Еда</button>
+          <button class="menu-tab"        data-menu="drinks">Напитки</button>
+        </div>
+        <div id="menu-food"   class="menu-content active"></div>
+        <div id="menu-drinks" class="menu-content"></div>
+      </div>
+
+      <!-- Корзина -->
+      <div id="tab-cart" class="tab-content">
+        <h2>Корзина</h2>
+        <div id="cart-list"></div>
+        <div id="cart-total" style="margin-top: 12px; font-weight: bold;"></div>
+      </div>
+
+      <!-- Награды -->
+      <div id="tab-rewards" class="tab-content">
+        <h2>Награды</h2>
+        <div id="user-points" style="margin-bottom:12px; font-weight:bold;"></div>
+        <!-- Вложенные табы -->
+        <div class="rewards-tabs">
+          <button class="rewards-tab active" data-rew="select">Выбрать награды</button>
+          <button class="rewards-tab"        data-rew="received">Получить</button>
+        </div>
+        <!-- Содержимое -->
+        <div id="rewards-select"   class="rewards-content active"></div>
+        <div id="rewards-received" class="rewards-content"></div>
+      </div>
+
+
+      <!-- Мероприятия -->
+      <div id="tab-events" class="tab-content">
+        <h2>Мероприятия</h2>
+      
+        <!-- Вложенные табы -->
+        <div class="events-tabs">
+          <button class="events-tab active" data-ev="select">Выбрать мероприятие</button>
+          <button class="events-tab"        data-ev="my">Мои мероприятия</button>
+        </div>
+      
+        <!-- Содержимое -->
+        <div id="events-select" class="events-content active"></div>
+        <div id="events-my"     class="events-content"></div>
+      </div>
+    </div>
+
+    <!-- Нижняя панель -->
+    <nav class="bottom-nav">
+      <button data-target="tab-menu"    class="active">📋<br/>Меню</button>
+      <button data-target="tab-cart" id="cart-button">
+        🛒<br/>Корзина
+        <span id="cart-badge" class="badge" style="display:none">0</span>
+      </button>
+      <button data-target="tab-rewards">        🏆<br/>Награды</button>
+      <button data-target="tab-events">         📅<br/>Мероприятия</button>
+    </nav>
+  </div>
+</body>
+</html>

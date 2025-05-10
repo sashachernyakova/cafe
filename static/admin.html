@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Админ-панель</title>
+</head>
+<body>
+  <h2>Начислить баллы за мероприятие</h2>
+  <div style="margin-top: 12px;">
+    <input id="user-id-input" type="number" placeholder="Введите User ID" />
+    <input id="points-input"  type="number" placeholder="Кол-во баллов" />
+    <button id="award-btn">Начислить баллы</button>
+  </div>
+
+  <h2>Список выданных кодов</h2>
+  <table id="codes-table" border="1">
+    <tr>
+      <th>Код</th>
+      <th>User ID</th>
+      <th>Награда</th>
+      <th>Дата</th>
+      <th>Удалить</th>
+    </tr>
+  </table>
+
+  <script src="admin.js"></script>
+</body>
+</html>
+
