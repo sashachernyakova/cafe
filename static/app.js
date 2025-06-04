@@ -1,4 +1,3 @@
-const POINTS_PERCENT = 0.02
 
 // Утилита для показа «тоста» — всплывающего уведомления, которое само исчезает
 function showToast(text, duration = 3000) {
@@ -22,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tg = window.Telegram.WebApp; // SDK Telegram встраивается через <script>
   tg.expand(); // разворачиваем WebApp на весь экран
   const USER_ID = tg.initDataUnsafe.user.id; // получаем ID текущего пользователя
+  const CHAT_ID = tg.initDataUnsafe.user.id;
 
   // Вставляем инструкцию в секцию «Мероприятия»
   {
@@ -118,40 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then(reloadCart);
   }
 
-  // ===== 4) Оплата заказа =====
   function payOrder() {
-    fetch(`/api/cart?user_id=${USER_ID}`)
-      .then(r => r.json())
-      .then(serverCart => {
-        const all = [...menuItems.food, ...menuItems.drinks];
-        let sum = 0;
-        serverCart.forEach(({ item_id, qty }) => {
-          const it = all.find(x => x.id === item_id);
-          if (!it) return;
-          sum += parseInt(it.price.replace(/\D/g,''), 10) * qty;
-        });
-        const bonus = Math.floor(sum * POINTS_PERCENT);
-        showToast(`Ваш заказ оплачен, вам начислены ${bonus} баллов`);
-
-        // очистка корзины по одной строке
-        serverCart.forEach(({ item_id, qty }) => {
-          fetch(`/api/cart?user_id=${USER_ID}`, {
-            method: 'DELETE',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ item_id, qty_change: -qty })
-          });
-        });
-
-        // начисление баллов
-        fetch(`/api/user_points?user_id=${USER_ID}`, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ points_change: bonus })
-        })
-        .then(() => {
-          reloadCart();
-          reloadRewards();
-        });
+    fetch('/api/pay', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        user_id: USER_ID,
+        chat_id: CHAT_ID
+      })
+    }).then(response => response.json())
+      .then(data => {
+        if (data.status === "invoice_sent") {
+          showToast("Счёт отправлен в Telegram bot, пожалуйста, оплатите его там.");
+        } else {
+          showToast("Ошибка при отправке счёта.");
+        }
       });
   }
 

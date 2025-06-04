@@ -1,6 +1,9 @@
 import sqlite3
 
-conn = sqlite3.connect('cafe.db')
+conn = sqlite3.connect('cafe.db', timeout=3.0, check_same_thread=False)
+conn.execute('PRAGMA journal_mode=WAL;')
+conn.execute('PRAGMA synchronous=NORMAL;')
+
 c = conn.cursor() # объект, на котором вызываем execute() для выполнения SQL
 
 c.execute('''
